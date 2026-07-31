@@ -85,6 +85,13 @@ test("stats match the paid and queued mock earnings and Bolt conduct is conditio
 });
 
 test("notification badge shows the unread number with v4 geometry", async ({ page }) => {
+  await page.context().addCookies([{
+    name: "jiwambe_notifs_read_v4",
+    value: "1",
+    domain: "127.0.0.1",
+    path: "/",
+    httpOnly: true,
+  }]);
   await page.goto("/?view=dashboard");
   const button = page.getByRole("button", { name: "Activity, 3 unread" });
   const badge = page.locator('[data-notification-badge="true"]');
@@ -111,7 +118,7 @@ test("invalid OTP, activity, payouts, and lead contact details match the prototy
   await expect(page.getByRole("dialog", { name: "Activity" })).toBeVisible();
   await expect(page.getByText("Amina Hassan visited the office")).toBeVisible();
   await page.getByRole("link", { name: "Close" }).click();
-  await expect(page.getByRole("button", { name: "Activity, 0 unread" })).toBeVisible();
+  await expect(page.getByRole("button", { name: "Activity, 3 unread" })).toBeVisible();
 
   await page.getByRole("link", { name: "payouts" }).click();
   await expect(page.getByText("UGK3XG91TQ")).toBeVisible();

@@ -15,7 +15,6 @@ import {
 import {
   approveApplicant,
   getMockPortalState,
-  markNotificationsRead,
   saveApplicant,
   saveMockLeads,
   signInMockAgent,
@@ -72,6 +71,5 @@ export async function saveLead(formData: FormData) {
 
 export async function openActivity(formData: FormData) {
   const tab = resolveDashboardTab(stringValue(formData, "tab"));
-  await markNotificationsRead();
   redirect(`/?view=dashboard&tab=${tab}&activity=1`);
 }

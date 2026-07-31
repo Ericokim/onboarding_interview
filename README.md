@@ -192,7 +192,7 @@ This repository is intentionally a prototype:
 - Application uploads record whether a file was supplied; files are not stored.
 - Leads and applicant details are serialized into HTTP-only cookies.
 - Seed payouts and activity notifications are static.
-- Notification-read state and mock approval state are browser-specific.
+- Seed notifications restore on dashboard reload so the demo unread badge remains easy to inspect.
 - Saved leads are capped to a small demo-friendly cookie payload.
 
 Cookie storage keeps the mock functional across server-rendered navigations, but it is not a production persistence strategy.
