@@ -27,6 +27,7 @@ The project deliberately uses mock data and cookie-backed state, so every main j
 - Responsive mobile framing, fixed referral action, and viewport-anchored sheets
 - Server Components, Server Actions, stable form Route Handlers, dynamic SSR, and Tailwind CSS
 - Unit, server-rendered component, and end-to-end test coverage
+- https://claude.ai/public/artifacts/ce55e8f6-55f1-4a41-9bb7-f9e55f0a6075
 
 ## Demo
 
