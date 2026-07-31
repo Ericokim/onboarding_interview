@@ -1,9 +1,7 @@
 import {
   approveMockApplication,
   openActivity,
-  saveLead,
   startLogin,
-  submitAgentApplication,
   verifyMockOtp,
 } from "./actions";
 import { ApplyScreen, LoginScreen, OtpScreen, PendingReview } from "./components/auth-screens";
@@ -26,7 +24,7 @@ export default async function Home({ searchParams }: { searchParams: SearchParam
   if (view === "otp") {
     content = <OtpScreen phone={firstParam(query.phone) || ""} verifyAction={verifyMockOtp} error={error} />;
   } else if (view === "apply") {
-    content = <ApplyScreen applicationAction={submitAgentApplication} error={error} />;
+    content = <ApplyScreen error={error} />;
   } else if (view === "pending") {
     content = <PendingReview name={state.applicant?.name || "Agent"} phone={state.applicant?.phone || "your number"} approveAction={approveMockApplication} />;
   } else if (view === "dashboard") {
@@ -46,7 +44,7 @@ export default async function Home({ searchParams }: { searchParams: SearchParam
       />
     );
   } else if (view === "add") {
-    content = <AddLeadScreen saveAction={saveLead} error={error} />;
+    content = <AddLeadScreen error={error} />;
   } else {
     content = <LoginScreen loginAction={startLogin} error={error} />;
   }

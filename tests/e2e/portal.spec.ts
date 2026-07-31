@@ -31,6 +31,7 @@ test("demo OTP opens the SSR dashboard and a lead can be saved", async ({ page }
   await page.getByRole("link", { name: "Close" }).click();
 
   await page.getByRole("link", { name: "+ Refer", exact: true }).click();
+  await expect(page.locator('form[action="/api/portal/leads"]')).toHaveAttribute("method", "post");
   await page.getByLabel("Full name").fill("Peter Maina");
   await page.getByLabel("Phone number").fill("0700 000 001");
   await page.getByLabel("National ID number").fill("33445566");
@@ -47,13 +48,16 @@ test("demo OTP opens the SSR dashboard and a lead can be saved", async ({ page }
 
 test("agent application and mock backoffice approval work without a database", async ({ page }) => {
   await page.goto("/?view=apply");
+  await expect(page.locator('form[action="/api/portal/applications"]')).toHaveAttribute("method", "post");
   await page.getByLabel("Full name").fill("Jane Wanjiku");
   await page.getByLabel("Phone number").fill("0722 111 222");
   await page.getByLabel("National ID number").fill("33456789");
   await page.getByLabel("Upload national ID").setInputFiles({
     name: "national-id.jpg",
     mimeType: "image/jpeg",
-    buffer: Buffer.from("mock national id"),
+    // Deliberately exceed the 1 MB Server Action limit. Application uploads
+    // use a stable Route Handler and must continue to submit successfully.
+    buffer: Buffer.alloc(1024 * 1024 + 64 * 1024, 1),
   });
   await page.getByLabel("Area").fill("Kasarani, Nairobi");
   await page.getByRole("button", { name: "Submit application" }).click();

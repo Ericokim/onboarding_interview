@@ -1,7 +1,7 @@
 import { renderToStaticMarkup } from "react-dom/server";
 import { describe, expect, it } from "vitest";
 
-import { LoginScreen, OtpScreen } from "../app/components/auth-screens";
+import { ApplyScreen, LoginScreen, OtpScreen } from "../app/components/auth-screens";
 import { AddLeadScreen, DashboardScreen } from "../app/components/dashboard";
 import { AppFrame, StatusPill } from "../app/components/ui";
 import { seedLeads, seedNotifications, seedPayouts } from "../lib/jiwambe/mock-data";
@@ -25,6 +25,15 @@ describe("server-rendered portal components", () => {
     expect(login).not.toContain("transparent_40%),#123E31");
     expect(otp).toContain("123456");
     expect(otp).toContain('autoComplete="one-time-code"');
+  });
+
+  it("uploads agent applications through a stable multipart route", () => {
+    const html = renderToStaticMarkup(<ApplyScreen />);
+
+    expect(html).toContain('action="/api/portal/applications"');
+    expect(html).toContain('method="post"');
+    expect(html).toContain('encType="multipart/form-data"');
+    expect(html).not.toContain("$ACTION_ID");
   });
 
   it("renders a Tailwind dashboard with mock leads, tabs, and a selected detail sheet", () => {
@@ -145,12 +154,20 @@ describe("server-rendered portal components", () => {
   });
 
   it("keeps Bolt conduct qualification conditional without a client component", () => {
-    const html = renderToStaticMarkup(<AddLeadScreen saveAction="/save" />);
+    const html = renderToStaticMarkup(<AddLeadScreen />);
 
     expect(html).toContain('name="bolt"');
     expect(html).toContain('class="bolt-conduct"');
     expect(html).toContain("Do they have good conduct?");
     expect(html).not.toContain('name="conduct" value="true" required=""');
+  });
+
+  it("posts new leads to a stable route instead of a generated Server Action", () => {
+    const html = renderToStaticMarkup(<AddLeadScreen />);
+
+    expect(html).toContain('action="/api/portal/leads"');
+    expect(html).toContain('method="post"');
+    expect(html).not.toContain("$ACTION_ID");
   });
 
   it("maps lead statuses to accessible badges", () => {

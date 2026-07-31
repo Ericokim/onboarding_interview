@@ -256,14 +256,14 @@ export function DashboardScreen({
   );
 }
 
-export function AddLeadScreen({ saveAction, error }: { saveAction: FormAction; error?: string }) {
+export function AddLeadScreen({ error }: { error?: string }) {
   return (
     <section className="fade-up px-6 pb-10">
       <Link href="/?view=dashboard" className="inline-block py-5 text-sm font-bold text-[#123E31]">← Dashboard</Link>
       <h1 className="mt-1 text-[26px] font-bold tracking-[-0.02em]">New lead</h1>
       <p className="mb-6 mt-1 text-[14.5px] leading-6 text-[#454D49]">Quick KYC — under a minute. Leads expire after <strong>{EXPIRY_DAYS} days</strong> if they don’t convert.</p>
       <Notice message={error} />
-      <form action={saveAction}>
+      <form action="/api/portal/leads" method="post">
         <Field label="Full name" required><input aria-label="Full name" className={inputClass} name="name" autoComplete="name" placeholder="As it appears on their ID" required minLength={3} /></Field>
         <Field label="Phone number" required hint="Their Safaricom line — used for follow-up."><input aria-label="Phone number" className={inputClass} name="phone" inputMode="tel" autoComplete="tel" placeholder="07XX XXX XXX" required /></Field>
         <Field label="National ID number" required><input aria-label="National ID number" className={inputClass} name="idNo" inputMode="numeric" placeholder="e.g. 33456789" required minLength={7} /></Field>

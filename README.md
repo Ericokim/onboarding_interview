@@ -25,7 +25,7 @@ The project deliberately uses mock data and cookie-backed state, so every main j
 - M-Pesa payout history and commission summaries
 - Accessible conversion battery and paid/queued earnings visualisations
 - Responsive mobile framing, fixed referral action, and viewport-anchored sheets
-- Server Components, Server Actions, dynamic SSR, and Tailwind CSS
+- Server Components, Server Actions, stable form Route Handlers, dynamic SSR, and Tailwind CSS
 - Unit, server-rendered component, and end-to-end test coverage
 
 ## Demo
@@ -61,7 +61,7 @@ flowchart LR
 | --- | --- |
 | Framework | Next.js 16 App Router |
 | UI | React 19 Server Components |
-| Mutations | React Server Actions |
+| Mutations | React Server Actions plus POST Route Handlers for file and lead forms |
 | Rendering | Dynamic server-side rendering |
 | Styling | Tailwind CSS 4 plus a small global animation layer |
 | Language | TypeScript |
@@ -79,10 +79,14 @@ flowchart TD
     Browser --> Page[app/page.tsx]
     Page --> RSC[Server Components]
     RSC --> Actions[Server Actions]
+    RSC --> Routes[Stable POST Route Handlers]
     Actions --> Domain[Domain validation]
+    Routes --> Domain
     Actions --> Session[Cookie-backed mock session]
+    Routes --> Session
     Session --> Seeds[Seed leads, payouts, notifications]
     Actions --> Page
+    Routes --> Page
 ```
 
 ### Server-rendered views
@@ -189,7 +193,7 @@ The browser suite covers:
 This repository is intentionally a prototype:
 
 - Authentication accepts any valid Kenyan phone and only OTP `123456`.
-- Application uploads record whether a file was supplied; files are not stored.
+- Application uploads use a multipart Route Handler, avoiding the 1 MB Server Action body limit; the mock records only whether a file was supplied.
 - Leads and applicant details are serialized into HTTP-only cookies.
 - Seed payouts and activity notifications are static.
 - Seed notifications restore on dashboard reload so the demo unread badge remains easy to inspect.
